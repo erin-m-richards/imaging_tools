@@ -4,12 +4,12 @@ pathlist = {};
 if isequal(names,0)
    disp('User selected Cancel');
 else
-    if size(names) > 1
-        for n=1:length(names)
-        pathlist{n} = strcat(path,names{n});
+    if size(names, 2) > 1
+        for n = 1:length(names)
+        pathlist{n, 1} = strcat(path, names{n});
         end
     else
-        pathlist{1} = strcat(path, names);
+        pathlist{1, 1} = strcat(path, names);
     end
 end
 end
