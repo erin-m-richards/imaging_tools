@@ -14,5 +14,7 @@ else
         end
     end
 end
-names = names';
+if size(pathlist, 1) > 1
+    names = names';
+end
 end
