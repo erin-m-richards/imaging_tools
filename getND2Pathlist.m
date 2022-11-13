@@ -1,4 +1,4 @@
-function [names, pathlist] = getND2Pathlist
+function [files, pathlist] = getND2Pathlist
 [names, path] = uigetfile('*.nd2', 'Select some nd2 files.', 'MultiSelect', 'on');
 pathlist = {};
 if isequal(names,0)
@@ -15,6 +15,8 @@ else
     end
 end
 if size(pathlist, 1) > 1
-    names = names';
+    files = names';
+else
+    files = {names};
 end
 end
