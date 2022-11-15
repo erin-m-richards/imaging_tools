@@ -1,4 +1,4 @@
-function [IDnames, IDpaths] = getIDNumber(main_files, id_files, id_file_type, delimiter)
+function [IDnames, IDpaths] = getIDNumber(main_files, id_paths, id_files, id_file_type, delimiter)
     
 for f = 1:length(main_files)
     c = 1;
@@ -10,7 +10,7 @@ for f = 1:length(main_files)
     
         if strfind(main_files{f}, id_file_name) == 1
             IDnames{c,f} = id_name;
-            IDpaths{c,f} = id_files{i};
+            IDpaths{c,f} = id_paths{i};
             c = c + 1;
         end
     end
