@@ -1,36 +1,31 @@
-function nucleusPos = txt2positions(txtFile)
-% TXT2POSITIONS Convert .txt file to cell array of the positions listed in
-% the .txt file.
+function idx = txt2positions(txtFile, header, footer)
+% TXT2POSITIONS Convert .txt file to cell array of the rows bookended
+% by the header and the footer listed in the .txt file.
 %  
 % INPUTS
 % ------
 % txtFile: .txt file that you want to read in
 %   string
+% header: text that indicates the start of the information to be indexed
+%   string
+% footer: text that indicates the end of the information to be indexed
+%   string
 
-filename = fopen(txtFile);
-line = fgetl(filename);
-numNuclei = 1;
+cellArray = txt2cell(txtFile); % read as a cell array first
+idxStart = find(strcmp(cellArray, header)); % find header rows
+idxEnd = find(strcmp(cellArray, footer)); % find footer rows
 
-while ischar(line) % As long as the file gives characters...
-    %Find rows with the nuclear position arrays.
-    nucleusTitleRow = strfind(line, 'Nucleus_START');
-    if length(nucleusTitleRow) == 1
-        line = fgetl(filename); % Move down to X pos
-        Xchar = line; % Get line
-        nucleusX = strsplit(Xchar); % Split at spaces
-        nucleusX = nucleusX(2:end-1); % Remove header
-        line = fgetl(filename); % Move down to y pos
-        Ychar = line;
-        nucleusY = strsplit(Ychar);
-        nucleusY = nucleusY(2:end-1);
-        nucleusList = NaN(size(nucleusX,2), 2);
-        for p = 1:size(nucleusX, 2) % Save as a list
-            nucleusList(p,1) = str2double(nucleusX{p});
-            nucleusList(p,2) = str2double(nucleusY{p});
-        end
-        nucleusPos{numNuclei, 1} = nucleusList;
-        numNuclei = numNuclei + 1;
-    end
-    line = fgetl(filename); % Move down a line
+% Find rows in .txt file in between header and footer rows.
+if length(idxStart) > 1
+    firstStart = num2str(idxStart(1) + 1); % include the header variables but not the header
+    firstEnd = num2str(idxEnd(1) - 1); % stop one short of the footer
+    secondStart = num2str(idxStart(2) + 1);
+    secondEnd = num2str(idxEnd(2) - 1);
+    idx(1,1) = cellstr(strcat(firstStart, ":", firstEnd));
+    idx(2,1) = cellstr(strcat(secondStart, ":", secondEnd)); 
+else
+    firstStart = num2str(idxStart(1) + 1);
+    firstEnd = num2str(idxEnd(1) - 1); 
+    idx(1,1) = cellstr(strcat(firstStart, ":", firstEnd));
 end
-fclose(filename);
+end
