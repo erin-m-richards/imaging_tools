@@ -1,10 +1,14 @@
-function pathlist = getPathlistAny()
+function pathlist = getPathlistAny(options)
 % GETPATHLISTANY Allow user to pick files from a pop-up window. 
-[names, path] = uigetfile(...
-    {'*.xlsx;*.csv;*.txt', 'Data matrix files (*.xlsx,*.csv,*.txt)';
-    '*.*', 'All files (*.*)'}, ...
-    'Select file(s) for analysis.', ...
-    'MultiSelect', 'on');
+arguments
+    options.fileID (1,1) string = "'*.xlsx;*.csv;*.txt', 'Data matrix files (*.xlsx,*.csv,*.txt)'; '*.*', 'All files (*.*)'"
+    options.message (1,1) string = "Select file(s) for analysis."
+    options.multiselect (1,1) string = "on"
+end
+
+[names, path] = uigetfile(options.fileID, options.message, ...
+    'MultiSelect', options.multiselect);
+
 pathlist = {};
 if length(names) > 1
     if class(names) == 'char'
